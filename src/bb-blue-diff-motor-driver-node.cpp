@@ -8,6 +8,12 @@
  * @author    usxbrix
  * @date      Nov 2018
  *
+ *            Modified February 2020 for use with the EduMIP robot
+ *            Requires that the right hand motor move in the opposite 
+ *            direction 
+ *            param added edumip, default 0
+ *            C. Stuart
+ *
  * @license
  * MIT License
  *
@@ -47,6 +53,7 @@ ros::Time g_msg_received;
 bool g_driving = 0;
 int g_left_motor;      // param default 1
 int g_right_motor;     // param default 2
+int g_edumip;          // param default 0
 double g_maxspeed;     // param default 0.4
 double g_minspeed;     // param default 0.1
 double g_turnspeed;    // param default 1
@@ -97,7 +104,11 @@ void cmd_velCallback(const geometry_msgs::Twist::ConstPtr& cmd_vel)
            velocity_right, duty_right);
 
   rc_motor_set(g_left_motor, duty_left);
-  rc_motor_set(g_right_motor, duty_right);
+  if (g_edumip == 1)
+  { rc_motor_set(g_right_motor, -duty_right);
+   } else
+  { rc_motor_set(g_right_motor, duty_right);
+   }
   g_driving = 1;
 }
 
@@ -122,6 +133,7 @@ int main(int argc, char** argv)
   ros::param::param("~timeout", cmd_vel_timeout, 5);
   ros::param::param("~left_motor", g_left_motor, 1);
   ros::param::param("~right_motor", g_right_motor, 2);
+  ros::param::param("~edumip", g_edumip, 0);
   ros::param::param("~maxspeed", g_maxspeed, 0.4);
   ros::param::param("~minspeed", g_minspeed, 0.1);
   ros::param::param("~wheelbase", g_wheelbase, 0.2);
