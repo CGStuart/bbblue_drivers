@@ -1,6 +1,7 @@
 # bbblue_drivers
 
-some ROS drivers for the Beaglbone Blue
+some ROS drivers for the Beaglbone Blue, with a mod added to support the EduMIP robot.  
+If the edumip parameter is set to 1 the right hand motor turns in the opposite direction, which is needed for the EduMIP.
 
 >WIP!!! Ugly code included!!!
 
@@ -30,16 +31,20 @@ _**Nodes overview**_
 
 # Installation
 
-TODO
+* Clone this repository in your catkin_ws/src directory (git clone https://github.com/CGStuart/bbblue_drivers)
+* cd ../
+* catkin_make
 
 # Usage
 ## Differential motor driver
 
 ### Parameter
 and default values
+Note:  set edumip to 1 to use on the EduMIP kit - it requires the RH and LH wheels to run in the opposite direction
 
 *   ~left_motor = 1
 *   ~right_motor = 2
+*   ~edumip = 0
 *   ~timeout = 5
 *   ~maxspeed = 0.4
 *   ~minspeed = 0.1
@@ -51,7 +56,8 @@ and default values
 
 `rosrun bbblue_drivers diff_motor_driver`
 
-`rosrun bbblue_drivers diff_motor_driver _left_motor:=3 _right_motor:=4 _minspeed:=0.137 _maxspeed:=0.364 _duty_factor:=2.2`
+For the EduMIP, check where your motors are plugged in.  Mine are in 3 (LH) and 2 (RH)
+`rosrun bbblue_drivers diff_motor_driver _left_motor:=3 _right_motor:=2 _minspeed:=0.137 _maxspeed:=0.364 _duty_factor:=2.2 edumip:=1`
 
 Publish to cmd_vel manually
 
